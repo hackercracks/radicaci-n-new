@@ -1,0 +1,374 @@
+{% extends "layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+        <a href="{% url 'files:file-detail' file.pk %}">Volver a los detalles</a>
+
+        <div class="container overflow-hidden my-3">
+            <div class="row gx-3">
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="mb-5 text-center">En formulario de revisión</h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+
+                            {{underReviewForm}}
+                            <!-- <div class="mb-3"> 
+                                <div id="div_id_review" class="mb-3 form-check"> 
+                                    {{reviewForm.review}}
+                                    <label for="id_review" class="form-check-label"> Reviewed</label> 
+                                </div> 
+                            </div> 
+                            <div id="div_id_review_date" class="mb-3"> 
+                                <label for="id_review_date" class="form-label">Review date </label> 
+                                {{reviewForm.review_date}}
+                            </div> -->
+
+
+                            <button type="submit" class="btn btn-primary" name="btnform1">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="mb-5 text-center">Formulario de revisión</h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+
+                            <div class="mb-3"> 
+                                <div id="div_id_review" class="mb-3 form-check"> 
+                                    {{reviewForm.review}}
+                                    <label for="id_review" class="form-check-label"> Revisado</label> 
+                                </div> 
+                            </div> 
+                            <div id="div_id_review_date" class="mb-3"> 
+                                <label for="id_review_date" class="form-label">Fecha de revisión </label> 
+                                {{reviewForm.review_date}}
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary" name="btnform1">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="text-center mb-5"><b>Observaciones para el usuario</b></h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div id="div_id_observation" class="mb-3"> 
+                                <label for="id_observation" class="form-label">Observation</label> 
+                                {{form.observation}}
+                            </div> 
+                            <div id="div_id_observation_date" class="mb-3"> 
+                                <label for="id_observation_date" class="form-label">Fecha de Observación</label> 
+                                {{form.observation_date}}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" name="btnform2">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row gx-3 mt-3">
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="text-center mb-5"><b>Formulario de notificación </b></h5>
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div id="div_id_is_notified" class="mb-3"> 
+                                <label for="id_is_notified"  class="form-label">¿Recibiste Notificación?</label> 
+                                <!-- {{notifiedForm.is_notified}} -->
+
+                                <select name="is_notified" class="form-select" maxlength="20" id="id_is_notified" onchange="toggleDiv(this.value)">
+                                    <option value="" selected="">Seleccione una opción</option>
+                                    <option value="Yes">Si</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+
+                            <div id="div_id_is_notified_date" class="mb-3"> 
+                                <label for="id_is_notified_date"  class="form-label">Fecha de notificación</label> 
+                                {{notifiedForm.is_notified_date}}
+                            </div>
+                            
+                            {% if file.is_notified_observation %}
+                                <div id="div_id_is_notified_observation" class="mb-3"> 
+                                    <label for="id_is_notified_observation"  class="form-label">Notificación Observación </label> 
+                                    {{notifiedForm.is_notified_observation}}
+                                </div>
+                            {% else %}
+                                <div id="div_id_is_notified_observation" class="mb-3" style="display: none;"> 
+                                    <label for="id_is_notified_observation"  class="form-label">Notificación Observación </label> 
+                                    {{notifiedForm.is_notified_observation}}
+                                </div>
+
+                            {% endif %}
+                                
+
+                            <button type="submit" class="btn btn-primary" name="btnform3">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="text-center mb-5"><b>Formulario de documento</b></h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div id="div_id_observation" class="mb-3"> 
+                                <label for="id_observation" class="form-label">Documento correcto</label> 
+                                {{documentForm.correct_document}}
+                            </div> 
+                            <div id="div_id_observation_date" class="mb-3"> 
+                                <label for="id_observation_date" class="form-label">Fecha del documento </label> 
+                                {{documentForm.correct_document_date}}
+                            </div>
+    
+                            <button type="submit" class="btn btn-primary" name="btnform4">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h4 class="mb-5 text-center">acto de procedimiento</h4>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div id="id_file_name" class="mb-3"> 
+                                <label for="id_file_name">Nombre:</label>
+                                {{actProcedureForm.file_name}}
+                            </div>
+    
+                            <div id="id_process_act_num" class="mb-3"> 
+                                <label for="id_process_act_num">Número de acto de proceso:</label>
+                                {{actProcedureForm.process_act_num}}
+                            </div>
+    
+                            <div id="id_process_act_num" class="mb-3">
+                                <label for="id_process_act_num_date">Acto del proceso num fecha:</label>
+                                {{actProcedureForm.process_act_num_date}}
+                            </div>
+    
+                            <div id="id_process_act_num" class="mb-3">
+                                <label for="id_liquidation_value">Valor de liquidación</label>
+                                {{actProcedureForm.liquidation_value}}
+                            </div>
+    
+                            <button type="submit" class="btn btn-primary" name="btnform5">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row gx-3 mt-5">
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="mb-3 text-center">Notificación personal</h5>
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div id="div_id_is_personal_notified" class="mb-3"> 
+                                <label for="is_personal_notified"  class="form-label">¿Recibiste Notificación? </label> 
+                            
+
+                                <select name="is_personal_notified" class="form-select" maxlength="20" id="id_is_personal_notified" onchange="toggleDivPersonal(this.value)">
+                                    <option value="" selected="">Seleccionar una opción: </option>
+                                    <option value="Yes">Si</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+
+                            <div id="div_id_is_personal_notified_date" class="mb-3"> 
+                                <label for="id_is_personal_notified_date"  class="form-label">Fecha de Notificación </label> 
+                                {{personalNotifiedForm.is_personal_notified_date}}
+                            </div>
+                            
+                            {% if file.is_notified_observation %}
+                                <div id="div_id_is_personal_notified_observation" class="mb-3"> 
+                                    <label for="id_is_personal_notified_observation"  class="form-label">Observación de Notificación </label> 
+                                    {{personalNotifiedForm.is_personal_notified_observation}}
+                                </div>
+                            {% else %}
+                                <div id="div_id_is_personal_notified_observation" class="mb-3" style="display: none;"> 
+                                    <label for="id_is_personal_notified_observation"  class="form-label">Observación de Notificación </label> 
+                                    {{personalNotifiedForm.is_personal_notified_observation}}
+                                </div>
+
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-primary" name="btnform5a">Enviar</button>
+                        </form>
+                    </div>
+                    
+                        
+                </div>
+                <div class="col">
+                    <div class="p-3 border bg-white text-center">
+                        <!-- <h4 class="mb-1 ">Payment</h4> -->
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{paymentForm}} <br>
+                            <button type="submit" class="btn btn-primary" name="btnform6">Enviar</button>
+                        </form>
+                    </div>
+                    
+                    
+                        
+                </div>
+
+                {% if file.payment %}
+                    <div class="col">
+                        <div class="p-3 border bg-white">
+                            <h6 class="mb-3 text-center">Detalles del pago</h6>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {{paymentDocForm}} <br>
+                                <button type="submit" class="btn btn-primary" name="btnform7">Enviar</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div class="row gx-3 mt-5">
+                
+
+                <div class="col">
+                    <div class="bg-white p-3">
+                        <h5 class="mb-3 text-center">Resolusión</h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <label for="id_resolution_number">Número de Resolución:</label>
+                            <input type="text" name="resolution_number" class="form-control" value={{result}} maxlength="500" id="id_resolution_number">
+                            <label for="id_resolution_date">Fecha de Resolución:</label>
+                            {{resolutionForm.resolution_date}}
+                            <button class="btn-primary btn" type="submit" name="btnform8">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="p-3 border bg-white">
+                        <h5 class="mb-3 text-center">Resolución Notificación Fecha</h5>
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            
+                            {{resolutionNotificationForm}}
+
+                            <button type="submit" class="btn btn-primary" name="btnform9">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if vefy.observation %}
+            <div class="card w-100">
+                <div class="card-body px-5">
+                    <h5 class="card-title">Observación</h5>
+                    <p class="card-text">{{vefy.observation}}</p>
+                    <small class="float-end "><i>Creado en: {{vefy.observation_date}}</i></small>
+                </div>
+            </div>
+        {% endif %}
+            
+        <div class="container my-5">
+            
+        </div>
+        
+        <div class="container my-5">
+            <div class="card rounded py-4 px-3" style="z-index: 0;">
+                <div class="d-flex justify-content-between">
+                    <small>
+                    ID Archivo
+                    <span class="text-primary mx-2 fw-bold"> {{file.file_name}} </span>
+                    </small>
+                    <small>
+                        Creado <span class="fw-bold mx-2"> {{file.file_date_added}} </span>
+                    </small>
+                </div>
+                <!-- Add class "active" to progress -->
+                <div class="row">
+                    <div class="col-12">
+                        <ul id="progressbar" class="text-center">
+                            <li class="active step0"></li>
+                            
+                            {% if file.agent %}
+                                <li class="active step0"></li>
+                            {% else %}
+                                <li class="step0"></li>
+                            {% endif %}
+
+                            {% if vefy.filev %}
+                                <li class="active step0"></li>
+                            {% else %}
+                                <li class="step0"></li>
+                            {% endif %}
+
+                            {% if vefy.review %}
+                                <li class="active step0"></li>
+                            {% else %}
+                                <li class="step0"></li>
+                            {% endif %}
+                                
+                            <li class="step0"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between mx-5 px-4 pt-5">
+
+                    <div class="col d-flex d-flex">
+                    <img src="{% static 'images/CheckList.png' %}" alt="" class="icon" />
+                    <p class="font-weight-bold">Archivo <br />Crear</p>
+                    </div>
+                    <div class="col d-flex d-flex">
+                    <img src="{% static 'images/Shipping.png' %}" alt="" class="icon" />
+                    <p class="font-weight-bold">Archivo <br />Asignado</p>
+                    </div>
+                    <div class="col d-flex d-flex">
+                    <img src="{% static 'images/Delivery.png' %}" alt="" class="icon" />
+                    <p class="font-weight-bold">File Under <br />Revisar</p>
+                    </div>
+                    
+                    <div class="col d-flex d-flex">
+                    <img src="{% static 'images/Delivery.png' %}" alt="" class="icon" />
+                    <p class="font-weight-bold">Archivo <br />Revisado</p>
+                    </div>
+                    
+                    <div class="col d-flex d-flex">
+                    <img src="{% static 'images/Home.png' %}" alt="" class="icon" />
+                    <p class="font-weight-bold">Archivo <br />Aprobado</p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    function toggleDiv(value) {
+        var id_myDIV = document.getElementById("div_id_is_notified_observation");
+        id_myDIV.style.display= value == "No" ? "block" : "none";
+    }
+
+    //  onchange="toggleDiv(this.value)"
+
+    function toggleDivPersonal(value) {
+        var id_myDIV = document.getElementById("div_id_is_personal_notified_observation");
+        id_myDIV.style.display= value == "No" ? "block" : "none";
+    }
+</script>
+{% endblock %}
